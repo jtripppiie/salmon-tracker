@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SalmonTracker"
+rootProject.name = "salmon-tracker"
 include(":app")
