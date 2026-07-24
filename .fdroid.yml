@@ -1,0 +1,25 @@
+Categories:
+  - Sports & Health
+License: GPL-3.0-or-later
+AuthorName: Jeremey Tripp
+SourceCode: https://github.com/jtripppiie/deraeve-fish
+IssueTracker: https://github.com/jtripppiie/deraeve-fish/issues
+Changelog: https://github.com/jtripppiie/deraeve-fish/releases
+
+AutoName: Salmon Tracker
+
+RepoType: git
+Repo: https://github.com/jtripppiie/deraeve-fish.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 3
+    commit: v1.0.0
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 3

@@ -25,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 public class FishSyncWorker extends Worker {
     public static final String UNIQUE_WORK = "salmontracker-periodic-sync";
     public static final String QUIET_CATCHUP_WORK = "salmontracker-quiet-catchup";
+    public static final String PREF_LAST_STARTED = "background_last_started";
+    public static final String PREF_LAST_FINISHED = "background_last_finished";
+    public static final String PREF_LAST_RESULT = "background_last_result";
 
     public FishSyncWorker(@NonNull Context appContext, @NonNull WorkerParameters params) {
         super(appContext, params);
@@ -35,19 +38,45 @@ public class FishSyncWorker extends Worker {
     public Result doWork() {
         Context context = getApplicationContext();
         SharedPreferences prefs = context.getSharedPreferences("fish_settings", Context.MODE_PRIVATE);
-        if (!prefs.getBoolean("sync_enabled", true)) return Result.success();
-        if (!FishLogic.isActiveSeason(LocalDate.now(ZoneId.of("America/Anchorage")))) return Result.success();
+        prefs.edit()
+                .putLong(PREF_LAST_STARTED, System.currentTimeMillis())
+                .putString(PREF_LAST_RESULT, "Running")
+                .apply();
+        if (!prefs.getBoolean("sync_enabled", true)) {
+            recordFinished(prefs, "Skipped — background sync is off");
+            return Result.success();
+        }
+        if (!FishLogic.isActiveSeason(LocalDate.now(ZoneId.of("America/Anchorage")))) {
+            recordFinished(prefs, "Skipped — outside count season");
+            return Result.success();
+        }
 
         FishRepository repository = new FishRepository(context);
         List<FishRepository.SyncResult> results = new ArrayList<>();
         boolean temporaryFailure = false;
+        boolean sourceFailure = false;
         for (FishRepository.Project project : repository.followedProjects()) {
             FishRepository.SyncResult result = repository.syncProject(project, false);
             results.add(result);
             temporaryFailure |= (result.sourceFailure && !result.breakerOpened) || result.offline;
+            sourceFailure |= result.sourceFailure;
         }
         NotificationHelper.dispatch(context, results);
-        return temporaryFailure ? Result.retry() : Result.success();
+        if (temporaryFailure) {
+            recordFinished(prefs, "Temporary network/source failure — retry scheduled");
+            return Result.retry();
+        }
+        recordFinished(prefs, sourceFailure
+                ? "Finished — source protection is active"
+                : "Finished successfully");
+        return Result.success();
+    }
+
+    private static void recordFinished(SharedPreferences prefs, String result) {
+        prefs.edit()
+                .putLong(PREF_LAST_FINISHED, System.currentTimeMillis())
+                .putString(PREF_LAST_RESULT, result)
+                .apply();
     }
 
     public static void schedule(Context context) {

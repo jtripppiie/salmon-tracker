@@ -1,0 +1,4 @@
+Initial public release.
+
+Includes official ADF&G count synchronization, historical comparisons, local
+notifications, quiet hours, project controls, and offline caching.

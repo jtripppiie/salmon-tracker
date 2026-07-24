@@ -34,7 +34,16 @@ public final class NotificationHelper {
 
     private NotificationHelper() {}
 
-    public static void dispatch(Context context, List<FishRepository.SyncResult> syncResults) {
+    /**
+     * Serializes delivery across foreground refreshes and WorkManager runs.
+     *
+     * Both paths execute in the application process and can otherwise read the
+     * same PENDING rows before either path marks them DELIVERED. Keeping the
+     * read, notification post, and state update under the class monitor prevents
+     * an individual alert and a summary (or two equivalent alerts) from being
+     * posted for the same announcement.
+     */
+    public static synchronized void dispatch(Context context, List<FishRepository.SyncResult> syncResults) {
         SharedPreferences prefs = context.getSharedPreferences("fish_settings", Context.MODE_PRIVATE);
         AppDatabase.FishDao dao = AppDatabase.get(context).fishDao();
 
@@ -188,7 +197,7 @@ public final class NotificationHelper {
                 .setColor(Color.rgb(10, 82, 117))
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSubText("Salmon Tracker • Alaska time")

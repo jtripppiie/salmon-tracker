@@ -185,7 +185,6 @@ public class MainActivity extends Activity {
         setContentView(scroll);
         loadCached();
         handleDeepLink(getIntent());
-        autoCheck();
     }
 
     private LinearLayout buildHero() {
@@ -245,7 +244,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (projectContainer != null) loadCached();
+        if (projectContainer != null) {
+            loadCached();
+            // Android may retain this activity when the user leaves and returns, so
+            // onCreate is not a reliable place for the foreground catch-up.
+            autoCheck();
+        }
     }
 
     @Override

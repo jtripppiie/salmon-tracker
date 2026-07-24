@@ -273,9 +273,19 @@ public class SettingsActivity extends Activity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, h:mm a", Locale.US).withZone(ALASKA);
         String check = latestCheck == 0 ? "Never" : formatter.format(Instant.ofEpochMilli(latestCheck)) + " AK";
         String update = latestUpdate == 0 ? "No post-baseline update detected" : formatter.format(Instant.ofEpochMilli(latestUpdate)) + " AK";
+        long backgroundStarted = prefs.getLong(FishSyncWorker.PREF_LAST_STARTED, 0);
+        String background = backgroundStarted == 0
+                ? "Never"
+                : formatter.format(Instant.ofEpochMilli(backgroundStarted)) + " AK";
+        String backgroundResult = prefs.getString(
+                FishSyncWorker.PREF_LAST_RESULT, "No result recorded");
         long hours = Math.max(6, prefs.getLong("frequency_hours", 6));
         String next = latestCheck == 0 ? "Pending first window" : formatter.format(Instant.ofEpochMilli(latestCheck + hours * 60L * 60L * 1000L)) + " AK, approximate";
-        return "Last background/manual check: " + check + "\nLast detected official update: " + update + "\nNext approximate window: " + next;
+        return "Last source check: " + check +
+                "\nLast background worker: " + background +
+                "\nBackground result: " + backgroundResult +
+                "\nLast detected official update: " + update +
+                "\nNext approximate window: " + next;
     }
 
     private void addMode(String value, String text) {

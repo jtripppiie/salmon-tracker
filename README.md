@@ -2,6 +2,11 @@
 
 An unofficial Android client for selected public Alaska Department of Fish and Game fish-count projects.
 
+Salmon Tracker is free software licensed under
+[GPL-3.0-or-later](LICENSE).
+
+Copyright © 2026 Jeremey Tripp.
+
 ## Current test build
 
 - Android 13 minimum (`minSdk 33`), Android 16 target (`targetSdk 36`).
@@ -37,3 +42,6 @@ app/build/outputs/apk/debug/app-debug.apk
 Release preparation, signing, store copy, declarations, and asset requirements are documented in
 [`docs/PLAY-SUBMISSION.md`](docs/PLAY-SUBMISSION.md). The publishable privacy page is
 [`docs/privacy-policy.html`](docs/privacy-policy.html).
+
+F-Droid source-build preparation, tagging, metadata, and submission are documented in
+[`docs/FDROID-SUBMISSION.md`](docs/FDROID-SUBMISSION.md).

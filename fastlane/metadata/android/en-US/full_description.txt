@@ -1,0 +1,20 @@
+Salmon Tracker is an independent, unofficial Android client for selected public
+Alaska Department of Fish and Game fish-count projects.
+
+Follow Kenai, Kasilof, and Russian River salmon counts, compare the current run
+with previous years, and receive a local notification when the official source
+publishes or revises a count.
+
+Features:
+
+* Downloads counts directly from the public ADF&amp;G website
+* Stores counts and preferences locally on your device
+* Checks for updates in the background with user-controlled timing
+* Supports quiet hours, project muting, and notification thresholds
+* Shows seven-day, 14-day, and season views
+* Compares the current run with up to five prior years
+* Contains no advertising, analytics, accounts, or tracking SDKs
+
+The ADF&amp;G source is public but is not a documented application API, so a
+future source-format change may require an app update. Fish-passage counts are
+historical context and do not guarantee fishing conditions or success.
