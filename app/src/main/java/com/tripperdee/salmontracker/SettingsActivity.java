@@ -48,7 +48,7 @@ public class SettingsActivity extends Activity {
             "The app connects directly to the Alaska Department of Fish and Game website to retrieve public fish-count data. As with any web request, that government-operated service may receive standard technical information such as your IP address and user agent under its own practices. The app does not send advertising identifiers, analytics events, precise location, contacts, photos, or user-entered content.\n\n" +
             "Notifications are generated locally from saved count updates. You may disable notifications or background synchronization in Settings, clear app data through Android Settings, or uninstall the app to remove its local data.\n\n" +
             "Salmon Tracker is an independent, unofficial app. It is not affiliated with or endorsed by the State of Alaska or the Alaska Department of Fish and Game. Source counts remain subject to revision.\n\n" +
-            "Privacy questions and support: github.com/jtripppiie/deraeve-fish/issues";
+            "Privacy questions and support: github.com/jtripppiie/salmon-tracker/issues";
     private static final int REQ_NOTIFICATION = 201;
     private static final int RIVER_DARK = Color.rgb(7, 52, 71);
     private static final int RIVER_BLUE = Color.rgb(10, 82, 117);
