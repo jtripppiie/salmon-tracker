@@ -140,7 +140,7 @@ public class FishRepository {
         if (state.breakerUntil > now && !manualForce) {
             return new SyncResult(project, "Source circuit breaker is active", true, false, null);
         }
-        if (state.lastAttempt > 0 && now - state.lastAttempt < MIN_CHECK_INTERVAL_MS) {
+        if (!manualForce && state.lastAttempt > 0 && now - state.lastAttempt < MIN_CHECK_INTERVAL_MS) {
             return new SyncResult(project, "Recently checked; using cached data", false, false, null);
         }
 
@@ -302,8 +302,15 @@ public class FishRepository {
         connection.setConnectTimeout(20_000);
         connection.setReadTimeout(25_000);
         connection.setInstanceFollowRedirects(true);
+        // ADF&G currently marks count responses cacheable for 30 days. Counts can
+        // change daily, so neither Android nor an intermediary should reuse an old
+        // body after the repository's own source-friendly interval has elapsed.
+        connection.setUseCaches(false);
+        connection.setDefaultUseCaches(false);
+        connection.setRequestProperty("Cache-Control", "no-cache, no-store, max-age=0");
+        connection.setRequestProperty("Pragma", "no-cache");
         connection.setRequestProperty("Accept", "application/json,text/html;q=0.8");
-        connection.setRequestProperty("User-Agent", "SalmonTracker/0.2 Android (unofficial ADF&G client)");
+        connection.setRequestProperty("User-Agent", "SalmonTracker/1.0.1 Android (unofficial ADF&G client)");
         if (etag != null && !etag.isBlank()) connection.setRequestProperty("If-None-Match", etag);
         if (lastModified != null && !lastModified.isBlank()) connection.setRequestProperty("If-Modified-Since", lastModified);
         int status = connection.getResponseCode();

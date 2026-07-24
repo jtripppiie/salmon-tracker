@@ -1,0 +1,3 @@
+Prevents Android and network caches from serving outdated ADF&G count
+responses. Manual checks now request fresh data even when an automatic check
+ran recently. Adds separate background-worker status details in Settings.

@@ -155,7 +155,7 @@ public class SettingsActivity extends Activity {
         long savedHours = Math.max(6, prefs.getLong("frequency_hours", 6));
         frequency.setSelection(savedHours == 12 ? 1 : savedHours == 24 ? 2 : savedHours == 48 ? 3 : 0);
         timing.addView(frequency);
-        timing.addView(note("Six hours is the most frequent default offered. Manual checks are always available, but repeated source requests inside the minimum interval use saved data."));
+        timing.addView(note("Six hours is the most frequent automatic schedule offered. Automatic checks inside the source-friendly minimum interval use saved data; the manual button requests a fresh response."));
         content.addView(timing, margin(0, 0, 0, 14));
 
         LinearLayout projects = card("Followed count projects", "Only selected projects are checked and shown on the home screen.");
