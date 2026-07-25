@@ -66,6 +66,17 @@ public final class FishLogic {
         return day.compareTo(start) >= 0 && day.compareTo(end) <= 0;
     }
 
+    /**
+     * Keeps persisted scheduling choices aligned with the options currently
+     * offered by Settings. Upgrades migrate the retired six-hour default to the
+     * new three-hour default.
+     */
+    public static long normalizeSyncFrequencyHours(long savedHours) {
+        return savedHours == 12L || savedHours == 24L || savedHours == 48L
+                ? savedHours
+                : 3L;
+    }
+
     public static String deepLink(String projectId, String reportDate, String mode) {
         return "salmontracker://count/" + projectId + "?date=" + reportDate + "&mode=" + mode;
     }

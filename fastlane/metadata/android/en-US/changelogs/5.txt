@@ -1,0 +1,3 @@
+Checks for official count updates approximately every three hours. Existing
+six-hour preferences migrate cleanly to the new default, while 12-, 24-, and
+48-hour choices remain unchanged.

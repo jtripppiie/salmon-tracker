@@ -221,7 +221,7 @@ public class MainActivity extends Activity {
         LinearLayout chips = new LinearLayout(this);
         chips.setOrientation(LinearLayout.HORIZONTAL);
         chips.addView(heroChip("ALASKA TIME"));
-        chips.addView(heroChip("6-HOUR SMART SYNC"), marginStart(dp(8)));
+        chips.addView(heroChip("3-HOUR SMART SYNC"), marginStart(dp(8)));
         hero.addView(chips, matchWrap(0, 13, 0, 0));
         return hero;
     }
@@ -543,7 +543,8 @@ public class MainActivity extends Activity {
         if (!prefs.getBoolean("sync_enabled", true)) {
             return "Last check: " + check + "\nLast detected update: " + update + "\nBackground sync: Off";
         }
-        long hours = Math.max(6, prefs.getLong("frequency_hours", 6));
+        long hours = FishLogic.normalizeSyncFrequencyHours(
+                prefs.getLong("frequency_hours", 3));
         String next = latestCheck == 0 ? "After the app schedules its first background window" :
                 format.format(Instant.ofEpochMilli(latestCheck + hours * 60L * 60L * 1000L)) + " AK (approx.)";
         return "Last check: " + check + "\nLast detected update: " + update + "\nNext background window: " + next;

@@ -175,10 +175,11 @@ Test files (they check that the code works) live in
    grouped into a tidy summary.
 
 ### The background checks (`FishSyncWorker`)
-Even with the app closed, WorkManager wakes the app roughly every 6 hours to run the
-same check. This is why you can get an alert without opening the app. (On some phones,
-aggressive battery settings can delay these — opening the app is always the surest
-way to force a fresh check.)
+Even with the app closed, WorkManager asks Android to wake the app roughly every
+3 hours to run the same check. This is why you can get an alert without opening
+the app. The timing is approximate: battery optimization can delay background
+work. Opening the app or using the manual check is the surest way to request a
+fresh response.
 
 ---
 

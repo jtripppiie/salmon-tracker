@@ -150,12 +150,13 @@ public class SettingsActivity extends Activity {
         LinearLayout timing = card("Synchronization timing", "Checks are approximate because Android may defer background work. Each count project still enforces a source-friendly minimum interval.");
         timing.addView(fieldLabel("Check frequency"));
         frequency = new Spinner(this);
-        String[] choices = {"Every 6 hours — recommended", "Twice per day — 12 hours", "Once per day — 24 hours", "Every 48 hours"};
+        String[] choices = {"Every 3 hours — recommended", "Twice per day — 12 hours", "Once per day — 24 hours", "Every 48 hours"};
         frequency.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, choices));
-        long savedHours = Math.max(6, prefs.getLong("frequency_hours", 6));
+        long savedHours = FishLogic.normalizeSyncFrequencyHours(
+                prefs.getLong("frequency_hours", 3));
         frequency.setSelection(savedHours == 12 ? 1 : savedHours == 24 ? 2 : savedHours == 48 ? 3 : 0);
         timing.addView(frequency);
-        timing.addView(note("Six hours is the most frequent automatic schedule offered. Automatic checks inside the source-friendly minimum interval use saved data; the manual button requests a fresh response."));
+        timing.addView(note("Three hours is the most frequent automatic schedule offered. Automatic checks inside the source-friendly minimum interval use saved data; the manual button requests a fresh response."));
         content.addView(timing, margin(0, 0, 0, 14));
 
         LinearLayout projects = card("Followed count projects", "Only selected projects are checked and shown on the home screen.");
@@ -279,7 +280,8 @@ public class SettingsActivity extends Activity {
                 : formatter.format(Instant.ofEpochMilli(backgroundStarted)) + " AK";
         String backgroundResult = prefs.getString(
                 FishSyncWorker.PREF_LAST_RESULT, "No result recorded");
-        long hours = Math.max(6, prefs.getLong("frequency_hours", 6));
+        long hours = FishLogic.normalizeSyncFrequencyHours(
+                prefs.getLong("frequency_hours", 3));
         String next = latestCheck == 0 ? "Pending first window" : formatter.format(Instant.ofEpochMilli(latestCheck + hours * 60L * 60L * 1000L)) + " AK, approximate";
         return "Last source check: " + check +
                 "\nLast background worker: " + background +
@@ -305,7 +307,7 @@ public class SettingsActivity extends Activity {
                 .putString("notification_mode", selectedMode())
                 .putInt("quiet_start", quietStart.getSelectedItemPosition())
                 .putInt("quiet_end", quietEnd.getSelectedItemPosition());
-        long[] values = {6, 12, 24, 48};
+        long[] values = {3, 12, 24, 48};
         editor.putLong("frequency_hours", values[Math.max(0, Math.min(values.length - 1, frequency.getSelectedItemPosition()))]);
         saveCheckBoxes(rootLayout, editor);
         try {

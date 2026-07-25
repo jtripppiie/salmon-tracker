@@ -73,6 +73,15 @@ public class FishLogicTest {
         assertFalse(FishLogic.isActiveSeason(LocalDate.of(2026, 10, 2)));
     }
 
+    @Test public void syncFrequencyMigratesRetiredSixHourDefault() {
+        assertEquals(3L, FishLogic.normalizeSyncFrequencyHours(6L));
+        assertEquals(3L, FishLogic.normalizeSyncFrequencyHours(0L));
+        assertEquals(3L, FishLogic.normalizeSyncFrequencyHours(3L));
+        assertEquals(12L, FishLogic.normalizeSyncFrequencyHours(12L));
+        assertEquals(24L, FishLogic.normalizeSyncFrequencyHours(24L));
+        assertEquals(48L, FishLogic.normalizeSyncFrequencyHours(48L));
+    }
+
     @Test public void deepLinkContainsProjectDateAndMode() {
         String link = FishLogic.deepLink("kenai-sockeye-late", "2026-07-18", "compare");
         assertTrue(link.contains("kenai-sockeye-late"));

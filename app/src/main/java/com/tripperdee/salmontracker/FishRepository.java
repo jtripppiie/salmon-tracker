@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 public class FishRepository {
     private static final String TAG = "SalmonTrackerSync";
     private static final ZoneId ALASKA = ZoneId.of("America/Anchorage");
-    private static final long MIN_CHECK_INTERVAL_MS = TimeUnit.HOURS.toMillis(4);
+    private static final long MIN_CHECK_INTERVAL_MS = TimeUnit.MINUTES.toMillis(170);
     private static final long BREAKER_MS = TimeUnit.HOURS.toMillis(24);
     private static final int BREAKER_FAILURES = 3;
     private static final Pattern HTML_ROW = Pattern.compile(

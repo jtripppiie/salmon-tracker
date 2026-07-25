@@ -86,8 +86,9 @@ public class FishSyncWorker extends Worker {
             manager.cancelUniqueWork(UNIQUE_WORK);
             return;
         }
-        long requested = prefs.getLong("frequency_hours", 6L);
-        long hours = Math.max(6L, requested);
+        long savedHours = prefs.getLong("frequency_hours", 3L);
+        long hours = FishLogic.normalizeSyncFrequencyHours(savedHours);
+        if (hours != savedHours) prefs.edit().putLong("frequency_hours", hours).apply();
         boolean wifiOnly = prefs.getBoolean("wifi_only", false);
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(wifiOnly ? NetworkType.UNMETERED : NetworkType.CONNECTED)
