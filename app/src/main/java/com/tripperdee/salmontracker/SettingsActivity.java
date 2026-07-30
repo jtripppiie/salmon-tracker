@@ -282,10 +282,15 @@ public class SettingsActivity extends Activity {
                 FishSyncWorker.PREF_LAST_RESULT, "No result recorded");
         long hours = FishLogic.normalizeSyncFrequencyHours(
                 prefs.getLong("frequency_hours", 3));
+        long scheduledAt = prefs.getLong(FishSyncWorker.PREF_SCHEDULED_AT, 0);
+        boolean overdue = prefs.getBoolean("sync_enabled", true) &&
+                FishLogic.isBackgroundSyncOverdue(
+                        System.currentTimeMillis(), backgroundStarted, scheduledAt, hours);
         String next = latestCheck == 0 ? "Pending first window" : formatter.format(Instant.ofEpochMilli(latestCheck + hours * 60L * 60L * 1000L)) + " AK, approximate";
         return "Last source check: " + check +
                 "\nLast background worker: " + background +
                 "\nBackground result: " + backgroundResult +
+                (overdue ? "\nBackground attention: Android has not run the worker in the expected window." : "") +
                 "\nLast detected official update: " + update +
                 "\nNext approximate window: " + next;
     }

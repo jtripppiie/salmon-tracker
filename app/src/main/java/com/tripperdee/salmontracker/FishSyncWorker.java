@@ -25,9 +25,12 @@ import java.util.concurrent.TimeUnit;
 public class FishSyncWorker extends Worker {
     public static final String UNIQUE_WORK = "salmontracker-periodic-sync";
     public static final String QUIET_CATCHUP_WORK = "salmontracker-quiet-catchup";
+    public static final String UPGRADE_CATCHUP_WORK = "salmontracker-upgrade-catchup";
     public static final String PREF_LAST_STARTED = "background_last_started";
     public static final String PREF_LAST_FINISHED = "background_last_finished";
     public static final String PREF_LAST_RESULT = "background_last_result";
+    public static final String PREF_SCHEDULED_VERSION = "background_scheduled_version";
+    public static final String PREF_SCHEDULED_AT = "background_scheduled_at";
 
     public FishSyncWorker(@NonNull Context appContext, @NonNull WorkerParameters params) {
         super(appContext, params);
@@ -98,7 +101,28 @@ public class FishSyncWorker extends Worker {
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.MINUTES)
                 .addTag("fish-count-sync")
                 .build();
-        manager.enqueueUniquePeriodicWork(UNIQUE_WORK, ExistingPeriodicWorkPolicy.UPDATE, request);
+        int scheduledVersion = prefs.getInt(PREF_SCHEDULED_VERSION, -1);
+        boolean appVersionChanged = scheduledVersion != BuildConfig.VERSION_CODE;
+        manager.enqueueUniquePeriodicWork(
+                UNIQUE_WORK,
+                appVersionChanged
+                        ? ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE
+                        : ExistingPeriodicWorkPolicy.UPDATE,
+                request
+        );
+        if (appVersionChanged) {
+            OneTimeWorkRequest catchUp = new OneTimeWorkRequest.Builder(FishSyncWorker.class)
+                    .setInitialDelay(1, TimeUnit.MINUTES)
+                    .setConstraints(constraints)
+                    .addTag("fish-count-upgrade-catchup")
+                    .build();
+            manager.enqueueUniqueWork(
+                    UPGRADE_CATCHUP_WORK, ExistingWorkPolicy.REPLACE, catchUp);
+            prefs.edit()
+                    .putInt(PREF_SCHEDULED_VERSION, BuildConfig.VERSION_CODE)
+                    .putLong(PREF_SCHEDULED_AT, System.currentTimeMillis())
+                    .apply();
+        }
     }
 
     // Schedules a single check to run shortly after quiet hours end so counts

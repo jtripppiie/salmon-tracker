@@ -181,6 +181,10 @@ the app. The timing is approximate: battery optimization can delay background
 work. Opening the app or using the manual check is the surest way to request a
 fresh response.
 
+After an app upgrade, Salmon Tracker recreates its periodic worker and schedules
+one catch-up check. The Settings diagnostics also report when Android has not
+run background work within the expected window.
+
 ---
 
 ## 8. "I want to change something" — copy-paste recipes

@@ -82,6 +82,17 @@ public class FishLogicTest {
         assertEquals(48L, FishLogic.normalizeSyncFrequencyHours(48L));
     }
 
+    @Test public void backgroundHealthAllowsOneExtraSchedulingWindow() {
+        long hour = 60L * 60L * 1000L;
+        long baseline = 1_000_000L;
+        assertFalse(FishLogic.isBackgroundSyncOverdue(
+                baseline + 5 * hour, baseline, 0, 3));
+        assertTrue(FishLogic.isBackgroundSyncOverdue(
+                baseline + 6 * hour + 1, baseline, 0, 3));
+        assertFalse(FishLogic.isBackgroundSyncOverdue(
+                baseline + 20 * hour, 0, 0, 3));
+    }
+
     @Test public void deepLinkContainsProjectDateAndMode() {
         String link = FishLogic.deepLink("kenai-sockeye-late", "2026-07-18", "compare");
         assertTrue(link.contains("kenai-sockeye-late"));

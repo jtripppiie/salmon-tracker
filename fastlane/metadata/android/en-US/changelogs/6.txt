@@ -1,0 +1,3 @@
+Repairs background notifications after app upgrades by recreating stale
+scheduled work and running a catch-up check. Settings now warns when Android
+has not run background synchronization within the expected window.

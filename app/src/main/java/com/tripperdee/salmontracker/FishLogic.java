@@ -77,6 +77,15 @@ public final class FishLogic {
                 : 3L;
     }
 
+    public static boolean isBackgroundSyncOverdue(long now, long lastStarted,
+                                                    long scheduledAt, long frequencyHours) {
+        long baseline = Math.max(lastStarted, scheduledAt);
+        if (baseline <= 0 || now <= baseline) return false;
+        long graceHours = Math.max(2L, frequencyHours);
+        long overdueAfterMs = (frequencyHours + graceHours) * 60L * 60L * 1000L;
+        return now - baseline > overdueAfterMs;
+    }
+
     public static String deepLink(String projectId, String reportDate, String mode) {
         return "salmontracker://count/" + projectId + "?date=" + reportDate + "&mode=" + mode;
     }
