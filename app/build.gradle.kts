@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
 }
 
+import java.util.Properties
+
 android {
     namespace = "com.tripperdee.salmontracker"
     compileSdk = 36
@@ -25,10 +27,19 @@ android {
         }
     }
 
+    val localSigning = Properties()
+    val localSigningFile = rootProject.file("signing.local.properties")
+    if (localSigningFile.exists()) {
+        localSigningFile.inputStream().use(localSigning::load)
+    }
     val releaseStoreFile = providers.environmentVariable("SALMON_UPLOAD_STORE_FILE").orNull
+        ?: localSigning.getProperty("storeFile")
     val releaseStorePassword = providers.environmentVariable("SALMON_UPLOAD_STORE_PASSWORD").orNull
+        ?: localSigning.getProperty("storePassword")
     val releaseKeyAlias = providers.environmentVariable("SALMON_UPLOAD_KEY_ALIAS").orNull
+        ?: localSigning.getProperty("keyAlias")
     val releaseKeyPassword = providers.environmentVariable("SALMON_UPLOAD_KEY_PASSWORD").orNull
+        ?: localSigning.getProperty("keyPassword")
 
     signingConfigs {
         if (releaseStoreFile != null && releaseStorePassword != null &&

@@ -715,7 +715,7 @@ public class MainActivity extends Activity {
 
         public HeatSalmonView(android.content.Context context) {
             super(context);
-            setContentDescription("Animated salmon heat-map intelligence icon");
+            setContentDescription("Animated salmon icon");
             if (animationsEnabled(context)) {
                 animator = ValueAnimator.ofFloat(0f, 1f);
                 animator.setDuration(1900);
@@ -754,22 +754,21 @@ public class MainActivity extends Activity {
             fish.cubicTo(width * .57f + drift, height * .91f, width * .27f + drift, height * .92f, width * .07f + drift, height * .58f);
             fish.close();
             canvas.drawPath(fish, paint);
-            paint.setColor(Color.WHITE);
+            paint.setColor(RIVER_DARK);
             canvas.drawCircle(width * .30f + drift, height * .48f, Math.max(4, width * .025f), paint);
-            for (int i = 0; i < 4; i++) {
-                float local = (phase * 4 - i + 4) % 4;
-                paint.setAlpha(65 + Math.round(190 * Math.max(0, 1 - Math.abs(local - .5f))));
-                float x = width * (.62f + i * .09f);
-                canvas.drawRoundRect(x, height * (.05f + i * .02f), x + width * .07f, height * (.22f + i * .02f), width * .018f, width * .018f, paint);
-            }
-            paint.setAlpha(175);
+            Path fin = new Path();
+            fin.moveTo(width * .57f + drift, height * .68f);
+            fin.lineTo(width * .73f + drift, height * .80f);
+            fin.lineTo(width * .67f + drift, height * .62f);
+            fin.close();
+            canvas.drawPath(fin, paint);
+            paint.setAlpha(210);
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(Math.max(2, width * .012f));
-            Path wave = new Path();
-            wave.moveTo(width * .12f, height * .94f);
-            wave.cubicTo(width * .34f, height * .82f, width * .52f, height, width * .72f, height * .91f);
-            wave.cubicTo(width * .82f, height * .86f, width * .9f, height * .88f, width * .96f, height * .94f);
-            canvas.drawPath(wave, paint);
+            Path gill = new Path();
+            gill.moveTo(width * .40f + drift, height * .37f);
+            gill.cubicTo(width * .47f + drift, height * .47f, width * .47f + drift, height * .61f, width * .40f + drift, height * .69f);
+            canvas.drawPath(gill, paint);
             paint.setStyle(Paint.Style.FILL);
             paint.setAlpha(255);
         }

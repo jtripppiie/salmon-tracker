@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
@@ -245,6 +246,9 @@ public class SettingsActivity extends Activity {
         TextView privacy = secondaryButton("READ PRIVACY POLICY");
         privacy.setOnClickListener(view -> showPrivacyPolicy());
         about.addView(privacy, margin(0, 8, 0, 0));
+        TextView feedback = secondaryButton("SEND FEEDBACK WITH DIAGNOSTICS");
+        feedback.setOnClickListener(view -> sendFeedback());
+        about.addView(feedback, margin(0, 8, 0, 0));
         about.addView(note(getString(R.string.app_version, BuildConfig.VERSION_NAME)));
         content.addView(about, margin(0, 0, 0, 16));
 
@@ -386,6 +390,27 @@ public class SettingsActivity extends Activity {
                 .setNegativeButton("Official source", (dialog, which) -> openUrl(ADFG_COUNTS_URL))
                 .setPositiveButton("Close", null)
                 .show();
+    }
+
+    private void sendFeedback() {
+        String report = "--- Salmon Tracker diagnostic report ---"
+                + "\nApp version: " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")"
+                + "\nAndroid: " + Build.VERSION.RELEASE + " (API " + Build.VERSION.SDK_INT + ")"
+                + "\nDevice: " + Build.MANUFACTURER + " " + Build.MODEL
+                + "\nNotifications enabled in app: " + prefs.getBoolean("notifications_master", true)
+                + "\nBackground sync enabled: " + prefs.getBoolean("sync_enabled", true)
+                + "\nWi-Fi only: " + prefs.getBoolean("wifi_only", false)
+                + "\nFish counts and followed projects included: false"
+                + "\nUnique identifiers included: false"
+                + "\n--- end report ---";
+        String body = "Tell us what happened above this diagnostic report:\n\n\n" + report;
+        Uri uri = Uri.parse("mailto:feedback@tripperdeelabs.com?subject="
+                + Uri.encode("Salmon Tracker feedback") + "&body=" + Uri.encode(body));
+        try {
+            startActivity(Intent.createChooser(new Intent(Intent.ACTION_SENDTO, uri), "Send feedback"));
+        } catch (android.content.ActivityNotFoundException error) {
+            Toast.makeText(this, "No email app is available to send feedback.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private LinearLayout card(String title, String subtitle) {

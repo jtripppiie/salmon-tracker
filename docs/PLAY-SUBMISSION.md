@@ -40,7 +40,7 @@ Review the current Play definition of "collected" before submitting. In particul
 - Host `docs/privacy-policy.html` at a stable public HTTPS URL and enter that URL in Play Console.
 - Add a support email address controlled by the developer.
 - Capture at least two current phone screenshots from the release build.
-- Create a 1024 x 500 feature graphic and upload the existing high-resolution app icon.
+- Upload `fastlane/metadata/android/en-US/images/featureGraphic.png` as the 1024 x 500 feature graphic and `fastlane/metadata/android/en-US/images/icon.png` as the high-resolution app icon.
 - Complete Content Rating, Target Audience, Ads, Data Safety, Government Apps, and App Access declarations.
 - Choose countries/regions and confirm the app is free.
 - Enroll in Play App Signing and retain the upload keystore securely.
@@ -57,6 +57,26 @@ export SALMON_UPLOAD_KEY_ALIAS='...'
 export SALMON_UPLOAD_KEY_PASSWORD='...'
 ./gradlew clean testDebugUnitTest lintRelease bundleRelease
 ```
+
+Alternatively, create an ignored `signing.local.properties` file in the repository
+root. This is the configured local workflow for the current WSL checkout:
+
+```properties
+storeFile=/home/jt/projects/tripperdeelabs-upload.jks
+storePassword=...
+keyAlias=tripperdeelabs
+keyPassword=...
+```
+
+With that file present, the build command needs no signing environment variables.
+
+For the current WSL checkout, the upload keystore path is:
+
+```bash
+export SALMON_UPLOAD_STORE_FILE=/home/jt/projects/tripperdeelabs-upload.jks
+```
+
+Never commit the populated properties file, passwords, or keystore.
 
 Verify the result before upload:
 
