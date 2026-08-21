@@ -39,8 +39,9 @@ Debug APK output:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Release preparation, signing, store copy, declarations, and asset requirements are documented in
-[`docs/PLAY-SUBMISSION.md`](docs/PLAY-SUBMISSION.md). The publishable privacy page is
+Start every Google Play release with the consolidated
+[`docs/RELEASE_README.md`](docs/RELEASE_README.md). Prepared store copy and
+detailed declarations are in [`docs/PLAY-SUBMISSION.md`](docs/PLAY-SUBMISSION.md). The publishable privacy page is
 [`docs/privacy-policy.html`](docs/privacy-policy.html).
 
 F-Droid source-build preparation, tagging, metadata, and submission are documented in
