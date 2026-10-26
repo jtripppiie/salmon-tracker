@@ -109,12 +109,9 @@ app/build/outputs/apk/debug/app-debug.apk
 Copy that file to a phone and tap it to install (you may need to allow "install from
 unknown sources").
 
-> On this project's Linux setup, the build command also points Gradle at the SDK:
-> ```bash
-> ANDROID_SDK_ROOT=/home/jt/android-sdk ANDROID_HOME=/home/jt/android-sdk \
->   ./gradlew --no-daemon testDebugUnitTest assembleDebug
-> ```
-> On your own machine with Android Studio, you usually don't need those extra parts.
+> Configure the SDK through Android Studio, an ignored `local.properties` file
+> (`sdk.dir=/absolute/path/to/Android/Sdk`), or your own `ANDROID_HOME`.
+> Do not copy another developer's machine-specific SDK path.
 
 ---
 

@@ -11,7 +11,8 @@ listing copy and detailed declaration wording.
 - Minimum Android: 13 (API 33)
 - Target and compile API: 36
 - Independent, unofficial client for selected public ADF&G fish counts
-- Free; no ads, accounts, analytics, purchases, or developer backend
+- $0.99 USD one-time purchase; no ads, accounts, analytics, in-app purchases,
+  subscriptions, or developer backend
 
 Check App bundle explorer before every upload. Increase `versionCode` above all
 previously uploaded codes; retain the package name and upload key.
@@ -70,7 +71,7 @@ Do not use government seals or agency logos.
 
 - Ads: No
 - App access: no account or restricted functionality
-- Privacy policy: publish `docs/privacy-policy.html` at a stable public HTTPS URL
+- Privacy policy: `https://tripperdeelabs.com/salmon-tracker/privacy/`
 - Government information: Yes; government app/affiliation: No
 - Data safety: re-evaluate direct ADF&G requests and normal IP/user-agent
   metadata under the current Play definitions
@@ -92,7 +93,8 @@ Complete any required closed test before production access.
 
 ## 6. Production and monitoring
 
-Promote the verified test artifact, confirm countries/free status/support email,
+Promote the verified test artifact, confirm United States distribution, the
+$0.99 USD one-time price, and support email,
 resolve every dashboard warning, and use a staged rollout. Monitor crashes,
 ANRs, WorkManager failures, notification behavior, ADF&G format changes, source
 availability, policy messages, and reviews. Pause rollout if parsing could show
@@ -107,4 +109,3 @@ and reviewer correspondence.
 
 F-Droid releases remain governed separately by
 [FDROID-SUBMISSION.md](FDROID-SUBMISSION.md).
-

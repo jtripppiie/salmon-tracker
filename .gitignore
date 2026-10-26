@@ -1,9 +1,27 @@
+# Local tooling and SDK configuration
 .gradle/
 .idea/
 local.properties
+*.iml
+.DS_Store
+
+# Private signing and environment configuration
 signing.local.properties
 *.jks
 *.keystore
+.env
+.env.*
+!.env.example
+
+# Generated outputs (retain source assets and Gradle wrapper)
 **/build/
-*.iml
-.DS_Store
+/builds/
+/dist/
+*.apk
+*.aab
+*.apks
+*.hprof
+
+# Private development notes and local evidence
+/.local/
+/CODEX_CHAT_HISTORY*

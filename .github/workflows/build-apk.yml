@@ -24,16 +24,14 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Gradle 9.5
+      - name: Set up Gradle wrapper cache
         uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.5.0'
 
       - name: Run unit tests
-        run: gradle --no-daemon --stacktrace testDebugUnitTest
+        run: ./gradlew --no-daemon --stacktrace testDebugUnitTest
 
       - name: Assemble debug APK
-        run: gradle --no-daemon --stacktrace assembleDebug
+        run: ./gradlew --no-daemon --stacktrace assembleDebug
 
       - name: Upload APK and test reports
         uses: actions/upload-artifact@v4

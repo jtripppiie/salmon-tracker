@@ -18,6 +18,8 @@ Counts may be preliminary or revised. Passage counts provide historical context 
 
 **Category:** Weather or Tools (choose the closest available category in Play Console)
 
+**Price:** $0.99 USD one-time purchase
+
 **Contains ads:** No
 
 **App access:** No account or restricted access
@@ -37,18 +39,20 @@ Review the current Play definition of "collected" before submitting. In particul
 
 ## Required assets and console work
 
-- Host `docs/privacy-policy.html` at a stable public HTTPS URL and enter that URL in Play Console.
-- Add a support email address controlled by the developer.
+- Privacy policy URL: `https://tripperdeelabs.com/salmon-tracker/privacy/`
+- Support email: `feedback@tripperdeelabs.com`.
 - Capture at least two current phone screenshots from the release build.
 - Upload `fastlane/metadata/android/en-US/images/featureGraphic.png` as the 1024 x 500 feature graphic and `fastlane/metadata/android/en-US/images/icon.png` as the high-resolution app icon.
 - Complete Content Rating, Target Audience, Ads, Data Safety, Government Apps, and App Access declarations.
-- Choose countries/regions and confirm the app is free.
+- Choose the United States as the distribution country and set the app price to
+  $0.99 USD. Review Google's automatically converted local price if additional
+  countries are added later.
 - Enroll in Play App Signing and retain the upload keystore securely.
 - If the account is a personal account created after November 13, 2023, complete the required closed test before applying for production.
 
 ## Signed bundle build
 
-Create an RSA upload key of at least 2048 bits and keep it outside this repository. Set these environment variables before building:
+Reuse the existing upload key for this app and keep it outside this repository. Do not generate a replacement key for an existing Play app. Supply the following variables through your secure local environment (the values below are placeholders, not credentials):
 
 ```bash
 export SALMON_UPLOAD_STORE_FILE=/absolute/path/to/upload-key.jks
